@@ -1,26 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
+import {ToastContainer} from "react-toastify";
+
+import CurrentUserProvider from "./contexts/UserContext/UserContext";
+import {ToasterProps} from "./constants/ToasterProps";
+import Views from "./views/Views";
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <>
+            <CurrentUserProvider>
+                <Views/>
+            </CurrentUserProvider>
+
+            <ToastContainer {...ToasterProps}/>
+        </>
+    );
 }
 
 export default App;
