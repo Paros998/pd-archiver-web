@@ -4,10 +4,13 @@ import {useCurrentUser} from "../../contexts/UserContext/UserContext";
 import {LoginFormikValues} from "../../interfaces/formik/LoginFormikValues";
 import Axios from "axios";
 import {appendUrlSearchParams} from "../../utils/appendUrlSearchParams";
-import {toast} from "react-toastify";
 import {Formik} from "formik";
 import * as yup from "yup";
 import LoginForm from "../../forms/LoginForm";
+import Footer from "../../components/Footer/Footer";
+import Header from '../../components/Header/Header';
+import MainWrapper from "../../components/Wrappers/MainWrapper";
+import {toast} from "react-toastify";
 
 
 const LoginFormikInitialValues: LoginFormikValues = {
@@ -38,11 +41,6 @@ function Login() {
             Axios.defaults.headers.common.Authorization = accessToken;
             localStorage.setItem("JWT_USER_TOKEN", accessToken);
 
-            const refreshToken = headers['authorization-refresh'];
-
-            Axios.defaults.headers["Authorization-Refresh"] = refreshToken;
-            localStorage.setItem("JWT_REFRESH_TOKEN", refreshToken);
-
             Axios.defaults.baseURL = 'http://localhost:8080/api/v1';
 
             toast.success("Logged successfully");
@@ -60,27 +58,25 @@ function Login() {
 
     return (
         <>
-            <header>
-                <div className="h-100 d-inline-flex container-fluid align-items-center justify-content-between px-4 py-2 bg-dark">
-                    {
-                        logout
-                            ? <>
-                                <div>
-                                    <h3 className="text-primary mb-0">Please Sign in Again to continue.</h3>
-                                </div>
-                                <h4 className="text-danger rounded-pill p-1 mb-0">You have been logout
-                                    successfully.</h4>
-                            </>
-                            : <div>
-                                <h3 className="text-primary mb-0">Please Sign in to continue.</h3>
+            <Header>
+                {
+                    logout
+                        ? <>
+                            <div>
+                                <h3 className="text-light mb-0">Please Sign in Again to continue.</h3>
                             </div>
-                    }
-                </div>
-            </header>
+                            <h4 className="text-danger rounded-pill p-1 mb-0">You have been logout
+                                successfully.</h4>
+                        </>
+                        : <div>
+                            <h3 className="text-light mb-0">Please Sign in to continue.</h3>
+                        </div>
+                }
+            </Header>
 
-            <main className="bg-light">
+            <MainWrapper className="bg-light">
                 <div className="d-flex flex-column container-fluid align-items-center justify-content-center rounded p-2">
-                    <h4>Please provide login data.</h4>
+                    <h4>Provide login data.</h4>
 
                     <Formik<LoginFormikValues>
                         initialValues={LoginFormikInitialValues}
@@ -94,9 +90,9 @@ function Login() {
                         Or sign up here, if you don't have an account .
                     </button>
                 </div>
-            </main>
+            </MainWrapper>
 
-
+            <Footer/>
         </>
     );
 }

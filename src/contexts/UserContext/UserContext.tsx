@@ -1,121 +1,104 @@
-import { Context, createContext, FC, ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { UserContextInterface } from "../../interfaces/models/UserContextInterface";
+import {Context, createContext, FC, ReactNode, useCallback, useContext, useEffect, useState} from "react";
+import {UserContextInterface} from "../../interfaces/models/UserContextInterface";
 import axios from 'axios';
 import Axios from 'axios';
-import { toast } from "react-toastify";
-import { UserModel } from "../../interfaces/models/UserModel";
+import {toast} from "react-toastify";
+import {UserModel} from "../../interfaces/models/UserModel";
 import jwtDecode from "jwt-decode";
-import { JwtUser } from "../../interfaces/JwtUser";
-import { Roles } from "../../interfaces/enums/Roles";
-import { useNavigate } from "react-router-dom";
+import {JwtUser} from "../../interfaces/JwtUser";
+import {Roles} from "../../interfaces/enums/Roles";
+import {useNavigate} from "react-router-dom";
 
-const UserContext = createContext<any>( undefined );
+const UserContext = createContext<any>(undefined);
 
-export const useCurrentUser = () => useContext( UserContext as Context<UserContextInterface> )
+export const useCurrentUser = () => useContext(UserContext as Context<UserContextInterface>)
 
 interface ProviderProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
-const CurrentUserProvider: FC<ProviderProps> = ( { children } ) => {
+const CurrentUserProvider: FC<ProviderProps> = ({children}) => {
 
-  const navigate = useNavigate();
-  const [ currentUser, setCurrentUser ] = useState<UserModel>();
-  const [ roles, setRoles ] = useState<Roles[]>();
-  const [ isPending, setIsPending ] = useState( false );
+    const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState<UserModel>();
+    const [roles, setRoles] = useState<Roles[]>();
+    const [isPending, setIsPending] = useState(false);
 
-  const onClearUser = async () => {
-    setCurrentUser( undefined );
+    const onClearUser = async () => {
+        setCurrentUser(undefined);
 
-    await onLogOut()
-  };
+        await onLogOut()
+    };
 
-  const fetchUser = useCallback( async () => {
+    const fetchUser = useCallback(async () => {
+        setIsPending(true);
 
-    setIsPending( true );
+        const token = localStorage.getItem('JWT_USER_TOKEN');
 
-    const token = localStorage.getItem( 'JWT_USER_TOKEN' );
-    const refreshToken = localStorage.getItem( 'JWT_REFRESH_TOKEN' );
+        if (!token) {
+            setIsPending(false)
+            setCurrentUser(undefined);
+            return;
+        }
 
-    if ( !token && !refreshToken ) {
-      setIsPending( false )
-      setCurrentUser( undefined );
-    }
+        if (Axios.defaults.headers.common.Authorization === undefined) {
+            Axios.defaults.headers.common.Authorization = token;
+        }
 
-    if ( !token ) {
-      setIsPending( false )
-      return;
-    }
+        const {userId}: JwtUser = jwtDecode(token);
 
-    if ( Axios.defaults.headers.common.Authorization === undefined ) {
-      Axios.defaults.headers.common.Authorization = token;
-    }
+        try {
 
-    if ( Axios.defaults.headers[ "Authorization-Refresh" ] === undefined ) {
-      Axios.defaults.headers[ "Authorization-Refresh" ] = refreshToken;
-    }
+            const {data} = await Axios.get<UserModel>(`/users/${userId}`);
+            setCurrentUser(data);
+            setRoles(data.roles);
 
-    const { userId }: JwtUser = jwtDecode( token );
+        } catch (e: any) {
 
-    try {
+            toast.error(e);
 
-      const { data } = await Axios.get<UserModel>( `/users/${ userId }` );
-      setCurrentUser( data );
-      setRoles( data.roles );
-      setIsPending( false );
-
-    } catch ( e: any ) {
-
-      toast.error( e );
-
-    } finally {
-
-      setIsPending( false );
-
-    }
-  }, [] );
+        } finally {
+            setIsPending(false)
+        }
+    }, []);
 
 
-  useEffect( () => {
-    fetchUser().catch();
-  }, [ fetchUser ] );
+    useEffect(() => {
+        fetchUser().catch();
+    }, [fetchUser]);
 
 
-  const onLogOut = async () => {
+    const onLogOut = async () => {
 
-    localStorage.removeItem( 'JWT_USER_TOKEN' );
-    localStorage.removeItem( 'JWT_REFRESH_TOKEN' );
+        localStorage.removeItem('JWT_USER_TOKEN');
 
-    setCurrentUser( undefined );
-    setRoles( [] );
+        setCurrentUser(undefined);
+        setRoles([]);
 
-    delete axios.defaults.headers.common[ "Authorization" ];
-    delete axios.defaults.headers.common[ "Authorization-Refresh" ];
+        delete axios.defaults.headers.common["Authorization"];
 
-    toast.info( "We hope to see you again soon" );
+        toast.info("We hope to see you again soon");
 
-    navigate( '/' );
+        navigate('/');
 
-    await fetchUser();
+        await fetchUser();
+    };
 
+    const contextData = {
+        currentUser,
+        fetchUser,
+        isPending,
+        setIsPending,
+        onLogOut,
+        onClearUser,
+        roles
+    };
 
-  };
-
-  const contextData = {
-    currentUser,
-    fetchUser,
-    isPending,
-    setIsPending,
-    onLogOut,
-    onClearUser,
-    roles
-  };
-
-  return (
-    <UserContext.Provider value={ contextData }>
-      { children }
-    </UserContext.Provider>
-  );
+    return (
+        <UserContext.Provider value={contextData}>
+            {children}
+        </UserContext.Provider>
+    );
 
 }
 

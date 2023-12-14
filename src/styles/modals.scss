@@ -1,0 +1,12 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+
+.modal-close-light {
+  .btn-close {
+    background-color: $light !important;
+  }
+}
+
+.image {
+  height: 200px;
+  width: 200px;
+}

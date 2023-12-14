@@ -3,30 +3,40 @@ import {Route, Routes} from "react-router-dom";
 import NotFound from "../../components/NotFound/NotFound";
 import Pending from "../../components/Pending/Pending";
 import {useCurrentUser} from "../../contexts/UserContext/UserContext";
-
+import Main from "../../sites/Main/Main";
+import MyFiles from "../../sites/MyFiles/MyFiles";
 
 const UserViews = () => {
+    const {isPending} = useCurrentUser();
 
-  const { isPending } = useCurrentUser();
+    if (isPending)
+        return <Pending/>
 
-  if ( isPending )
-    return <Pending/>
+    return (
+        <Routes>
 
-  return (
-    <Routes>
+            <Route
+                path='/'
+                element={<Main/>}
+            />
 
-        <Route
-            path='/'
-            element={ <div>After login</div>}
-        />
+            <Route
+                path='/main'
+                element={<Main/>}
+            />
 
-      <Route
-        path='*'
-        element={ <NotFound/> }
-      />
+            <Route
+                path='/my-files'
+                element={<MyFiles/>}
+            />
 
-    </Routes>
-  );
+            <Route
+                path='*'
+                element={<NotFound/>}
+            />
+
+        </Routes>
+    );
 };
 
 export default UserViews;

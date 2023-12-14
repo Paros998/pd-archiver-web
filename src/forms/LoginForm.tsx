@@ -49,7 +49,7 @@ const LoginForm = () => {
       </FormBoot.Group>
 
 
-      <hr className={ `my-4 w-90 position-relative left-5` }/>
+      <hr className={ `my-4 w-50 align-self-center position-relative left-5` }/>
 
       <SubmitButton
         variant={ `info` }

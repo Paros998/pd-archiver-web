@@ -3,6 +3,8 @@ import {Route, Routes} from "react-router-dom";
 import {useCurrentUser} from "../../contexts/UserContext/UserContext";
 import Pending from "../../components/Pending/Pending";
 import NotFound from "../../components/NotFound/NotFound";
+import Main from "../../sites/Main/Main";
+import MyFiles from "../../sites/MyFiles/MyFiles";
 
 
 const AdminViews = () => {
@@ -13,6 +15,21 @@ const AdminViews = () => {
 
     return (
         <Routes>
+
+            <Route
+                path='/'
+                element={<Main/>}
+            />
+
+            <Route
+                path='/main'
+                element={<Main/>}
+            />
+
+            <Route
+                path='/my-files'
+                element={<MyFiles/>}
+            />
 
             <Route
                 path='*'
