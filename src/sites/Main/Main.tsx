@@ -5,13 +5,17 @@ import UserWelcome from "../../components/UserWelcome/UserWelcome";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import Navbar from "../../components/Navbar/Navbar";
 import MainWrapper from "../../components/Wrappers/MainWrapper";
+import NewFile from "../../components/NewFile/NewFile";
 
 const Main = () => {
     return (
         <>
             <Header>
                 <UserWelcome/>
-                <LogoutButton/>
+                <div className={`d-flex justify-content-around align-items-center`}>
+                    <NewFile/>
+                    <LogoutButton/>
+                </div>
             </Header>
 
             <MainWrapper>

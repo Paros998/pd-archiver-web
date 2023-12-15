@@ -6,9 +6,11 @@ import AdminViews from "./AuthorisedViews/AdminViews";
 import UnauthorisedViews from "./UnauthorisedViews/UnauthorisedViews";
 import { useInitAxios } from "../hooks/useInitAxios";
 import { useCurrentUser } from "../contexts/UserContext/UserContext";
+import {usePdf} from "../initialization/pdf";
 
 const Views = () => {
   useInitAxios();
+  usePdf();
   const { roles, isPending } = useCurrentUser();
 
   if ( isPending )

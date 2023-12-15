@@ -6,7 +6,24 @@
   }
 }
 
-.image {
-  height: 200px;
-  width: 200px;
+.file-preview {
+  .image {
+    height: 200px;
+    width: 200px;
+  }
+
+  .react-pdf__Page {
+    --scale-factor: 0 !important;
+
+    .react-pdf__Page__canvas {
+      width: 500px !important;
+      height: 680px !important;
+      aspect-ratio: auto 500 / 680;
+    }
+  }
+
+}
+
+.modal-body {
+  width: 600px;
 }

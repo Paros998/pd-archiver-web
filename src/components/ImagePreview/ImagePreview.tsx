@@ -1,24 +1,11 @@
 import React, {FC} from 'react';
-import {useFetchData} from "../../hooks/useFetchData";
 import {FileUrls} from "../../interfaces/models/FileUrls";
-import Pending from "../Pending/Pending";
 
 interface ImagePreviewProps {
-    fileId: string
+    file: FileUrls
 }
 
-const ImagePreview: FC<ImagePreviewProps> = ({fileId}) => {
-    const [file, , isPending] = useFetchData<FileUrls>(`files/${fileId}`)
-
-    if (isPending)
-        return <Pending/>
-
-    if (!file) {
-        return <span>
-            File preview loading.
-        </span>
-    }
-
+const ImagePreview: FC<ImagePreviewProps> = ({file}) => {
     return (
         <img className={`image-fluid`}
              src={file.fileUrl}

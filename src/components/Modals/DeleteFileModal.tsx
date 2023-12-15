@@ -1,11 +1,14 @@
-import React, {FC, SetStateAction} from 'react';
+import React, {FC, SetStateAction, useState} from 'react';
 import {Button, Container, Modal} from "react-bootstrap";
 import ImagePreview from "../ImagePreview/ImagePreview";
+import {Page, Document} from "react-pdf";
+import FilePreview from "../FilePreview/FilePreview";
 
 export interface FileProps {
     fileId: string;
     canPreviewAsImage: boolean;
     canPreviewAsFile: boolean;
+    extension: string;
 }
 
 interface DeleteFileModalProps {
@@ -38,17 +41,12 @@ const DeleteFileModal: FC<DeleteFileModalProps> = ({setShowDeleteModal, onDelete
             </Modal.Header>
             <Modal.Body as={ Container } className='position-relative d-flex flex-column'>
 
-                {
-                    file.canPreviewAsImage &&
-                    <div className={'justify-content-center d-inline-flex mb-3'}>
-                        <ImagePreview fileId={file.fileId}/>
-                    </div>
-                }
+                <FilePreview file={file}/>
 
                 <div className={`d-inline-flex justify-content-around align-items-center`}>
                     <Button
-                        className={ `ms-3 w-30` }
-                        variant={ "outline-light" }
+                        className={`ms-3 w-30`}
+                        variant={"outline-light" }
                         onClick={ () => setShowDeleteModal( false ) }
                     >
                         Cancel
