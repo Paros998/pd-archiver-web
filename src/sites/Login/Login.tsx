@@ -25,7 +25,7 @@ const LoginFormValidationSchema = yup.object().shape({
         .required(`Password cannot be empty`)
 });
 
-function Login() {
+const Login = () => {
     const {logout} = useParams<{ logout: string }>();
     const navigate = useNavigate();
     const {fetchUser, setIsPending} = useCurrentUser();

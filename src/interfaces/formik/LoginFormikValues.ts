@@ -1,4 +1,4 @@
-export interface LoginFormikValues {
-  username:string;
-  password:string;
+import {CommonUserValues} from "./CommonValues";
+
+export interface LoginFormikValues extends CommonUserValues{
 }
