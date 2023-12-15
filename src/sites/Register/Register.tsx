@@ -39,7 +39,7 @@ const Register = () => {
 
             navigate('/login');
         } catch (e: any) {
-            if (e.status === 406) {
+            if (e.response?.status === 406) {
                 toast.error("Username is already taken, please choose different one.");
             }
         }
@@ -58,7 +58,7 @@ const Register = () => {
                 <div className="d-flex flex-column container-fluid align-items-center justify-content-center rounded p-2">
                     <h4>Provide user register data.</h4>
 
-                    <Formik<LoginFormikValues>
+                    <Formik<RegisterFormikValues>
                         initialValues={RegisterFormikInitialValues}
                         onSubmit={handleSignUp}
                         validationSchema={RegisterFormValidationSchema}
