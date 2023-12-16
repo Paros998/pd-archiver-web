@@ -1,12 +1,8 @@
-import React, {useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
-import {useCurrentUser} from "../../contexts/UserContext/UserContext";
-import {LoginFormikValues} from "../../interfaces/formik/LoginFormikValues";
+import React from 'react';
+import {useNavigate} from "react-router-dom";
 import Axios from "axios";
-import {appendUrlSearchParams} from "../../utils/appendUrlSearchParams";
 import {Formik} from "formik";
 import * as yup from "yup";
-import LoginForm from "../../forms/LoginForm";
 import Footer from "../../components/Footer/Footer";
 import Header from '../../components/Header/Header';
 import MainWrapper from "../../components/Wrappers/MainWrapper";

@@ -1,14 +1,13 @@
 import React from 'react';
 import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 import UserWelcome from "../../components/UserWelcome/UserWelcome";
-import LogoutButton from "../../components/LogoutButton/LogoutButton";
-import Navbar from "../../components/Navbar/Navbar";
-import MainWrapper from "../../components/Wrappers/MainWrapper";
 import NewFile from "../../components/NewFile/NewFile";
-import LastFiles from "../../components/LastFiles/LastFiles";
+import LogoutButton from "../../components/LogoutButton/LogoutButton";
+import MainWrapper from "../../components/Wrappers/MainWrapper";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
 
-const Main = () => {
+const FileDetails = () => {
     return (
         <>
             <Header>
@@ -21,7 +20,6 @@ const Main = () => {
 
             <MainWrapper className={`d-flex`}>
                 <Navbar/>
-                <LastFiles/>
             </MainWrapper>
 
             <Footer/>
@@ -29,4 +27,4 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default FileDetails;

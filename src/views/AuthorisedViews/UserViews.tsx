@@ -5,6 +5,7 @@ import Pending from "../../components/Pending/Pending";
 import {useCurrentUser} from "../../contexts/UserContext/UserContext";
 import Main from "../../sites/Main/Main";
 import MyFiles from "../../sites/MyFiles/MyFiles";
+import FileDetails from "../../sites/FileDetails/FileDetails";
 
 const UserViews = () => {
     const {isPending} = useCurrentUser();
@@ -28,6 +29,11 @@ const UserViews = () => {
             <Route
                 path='/my-files'
                 element={<MyFiles/>}
+            />
+
+            <Route
+                path='/file/:fileId'
+                element={<FileDetails/>}
             />
 
             <Route

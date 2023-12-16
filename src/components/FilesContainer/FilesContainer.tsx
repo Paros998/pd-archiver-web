@@ -61,16 +61,14 @@ const FilesContainer = () => {
     }
 
     if (!files || files.length === 0) {
-        return <>
-            <h3>No user files</h3>
-        </>
+        return <h3>No user files</h3>
     }
 
     return (
         <div className='h-100 w-100 pt-1 container-fluid px-4 gap-2 d-flex flex-column'>
             {
                 files.map((file, i) =>
-                    <div key={i} className="rounded bg-dark text-light row align-items-center py-3">
+                    <div key={i} className="rounded bg-secondary text-light row align-items-center py-3">
                         <div className="col-3 text-truncate">
                             File name: {file.fileName}
                         </div>

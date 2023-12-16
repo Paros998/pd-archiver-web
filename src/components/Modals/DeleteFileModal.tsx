@@ -1,7 +1,5 @@
-import React, {FC, SetStateAction, useState} from 'react';
+import React, {FC, SetStateAction} from 'react';
 import {Button, Container, Modal} from "react-bootstrap";
-import ImagePreview from "../ImagePreview/ImagePreview";
-import {Page, Document} from "react-pdf";
 import FilePreview from "../FilePreview/FilePreview";
 
 export interface FileProps {
@@ -28,7 +26,7 @@ const DeleteFileModal: FC<DeleteFileModalProps> = ({setShowDeleteModal, onDelete
             onHide={ () => setShowDeleteModal( false ) }
             show={ showDeleteModal }
             size='lg'
-            contentClassName='rounded-0 border-1 border-light bg-dark  text-light'
+            contentClassName='rounded-0 border-1 border-light bg-dark text-light'
         >
             <Modal.Header closeButton className={ `bg-dark text-light modal-close-light` }>
 
