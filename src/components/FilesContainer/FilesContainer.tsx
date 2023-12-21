@@ -8,11 +8,14 @@ import DeleteFileModal, {FileProps} from "../Modals/DeleteFileModal";
 import Axios from "axios";
 import {toast} from "react-toastify";
 import {supportedFileExtensionsForPreview, supportedImageExtensions} from "../../constants/ImageExtensions";
+import {useNavigate} from "react-router-dom";
 
 const FilesContainer = () => {
+    const navigate = useNavigate();
     const {currentUser} = useCurrentUser();
     const [files, fetchFiles, isPending] = useFetchData<FileModel[]>(`/users/${currentUser?.userId}/files`)
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [file, setFile] = useState<FileProps | undefined>(undefined);
 
     const launchModal = (file: FileModel) => {
@@ -26,7 +29,7 @@ const FilesContainer = () => {
     }
 
     const onDeleteSubmit = async (fileId: string) => {
-
+        setIsDeleting(true);
         try {
 
             await Axios.delete(`files/${fileId}`);
@@ -35,11 +38,11 @@ const FilesContainer = () => {
             toast.info("File has been deleted");
 
         } catch (e: any) {
-
+            setIsDeleting(false);
             toast.error(e);
 
         } finally {
-
+            setIsDeleting(false);
             await fetchFiles();
 
         }
@@ -65,7 +68,7 @@ const FilesContainer = () => {
     }
 
     return (
-        <div className='h-100 w-100 pt-1 container-fluid px-4 gap-2 d-flex flex-column'>
+        <div className='h-100 w-100 py-3 container-fluid px-4 gap-2 d-flex flex-column overflow-y-auto'>
             {
                 files.map((file, i) =>
                     <div key={i} className="rounded bg-secondary text-light row align-items-center py-3">
@@ -88,7 +91,7 @@ const FilesContainer = () => {
                             Backup: {file.backupReady ? `Available` : `Unavailable`}
                         </div>
                         <div className="col-1 d-inline-flex gap-2">
-                            <Button variant={"outline-info"} className="rounded-pill p-1">Details</Button>
+                            <Button variant={"outline-info"} onClick={() => navigate(`/file/${file.fileId}`)} className="rounded-pill p-1">Details</Button>
                             <Button variant={"danger"} onClick={() => launchModal(file)} className="rounded-pill p-1">Delete</Button>
                         </div>
                     </div>
@@ -99,6 +102,8 @@ const FilesContainer = () => {
                              setShowDeleteModal={setShowDeleteModal}
                              onDeleteSubmit={onDeleteSubmit}
                              file={file as FileProps}
+                             isDeleteSubmitting={isDeleting}
+
             />
         </div>
     );

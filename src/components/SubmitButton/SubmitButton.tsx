@@ -1,39 +1,34 @@
 import React, {FC} from 'react';
-import {ButtonProps} from "react-bootstrap/Button";
+import {BaseSubmitButtonProps} from "./SubmitFormButton";
 import {Button, Spinner} from "react-bootstrap";
-import {useFormikContext} from 'formik';
 
-interface SubmitButtonProps extends ButtonProps {
-
+interface NonFormSubmitButtonProps extends BaseSubmitButtonProps {
+    isSubmitting: boolean;
 }
 
-const SubmitButton: FC<SubmitButtonProps> = ({
-                                               children,
-                                               ...props
-                                             }) => {
-  const {isSubmitting} = useFormikContext();
-  return (
+const SubmitButton: FC<NonFormSubmitButtonProps> = ({isSubmitting, children, ...props}) => {
+    return (
 
-    <Button
-      type={"submit"}
-      disabled={isSubmitting}
-      {...props}
-    >
-      {
-        isSubmitting &&
+        <Button
+            type={"submit"}
+            disabled={isSubmitting}
+            {...props}
+        >
+            {
+                isSubmitting &&
 
-        <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            className='me-1'
-        />
-      }
+                <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    className='me-1'
+                />
+            }
 
-      {children}
-    </Button>
-  );
+            {children}
+        </Button>
+    );
 };
 
 export default SubmitButton;

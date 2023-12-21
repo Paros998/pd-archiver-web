@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import UserWelcome from "../../components/UserWelcome/UserWelcome";
@@ -9,19 +9,21 @@ import NewFile from "../../components/NewFile/NewFile";
 import LastFiles from "../../components/LastFiles/LastFiles";
 
 const Main = () => {
+    const [shouldReload, setShouldReload] = useState<boolean>(true);
+
     return (
         <>
             <Header>
                 <UserWelcome/>
                 <div className={`d-flex justify-content-around align-items-center`}>
-                    <NewFile/>
+                    <NewFile reloadData={() => setShouldReload(true)}/>
                     <LogoutButton/>
                 </div>
             </Header>
 
             <MainWrapper className={`d-flex`}>
                 <Navbar/>
-                <LastFiles/>
+                <LastFiles shouldReload={shouldReload} reset={() => setShouldReload(false)}/>
             </MainWrapper>
 
             <Footer/>

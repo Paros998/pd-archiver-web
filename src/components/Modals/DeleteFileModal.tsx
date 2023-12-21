@@ -1,6 +1,7 @@
 import React, {FC, SetStateAction} from 'react';
 import {Button, Container, Modal} from "react-bootstrap";
 import FilePreview from "../FilePreview/FilePreview";
+import SubmitButton from "../SubmitButton/SubmitButton";
 
 export interface FileProps {
     fileId: string;
@@ -13,10 +14,11 @@ interface DeleteFileModalProps {
     showDeleteModal: boolean;
     setShowDeleteModal: React.Dispatch<SetStateAction<boolean>>;
     onDeleteSubmit: (fileId: string) => Promise<void>;
+    isDeleteSubmitting: boolean;
     file: FileProps;
 }
 
-const DeleteFileModal: FC<DeleteFileModalProps> = ({setShowDeleteModal, onDeleteSubmit, showDeleteModal, file}) => {
+const DeleteFileModal: FC<DeleteFileModalProps> = ({setShowDeleteModal, onDeleteSubmit, showDeleteModal, file, isDeleteSubmitting}) => {
     if (!showDeleteModal)
         return <></>;
 
@@ -50,13 +52,14 @@ const DeleteFileModal: FC<DeleteFileModalProps> = ({setShowDeleteModal, onDelete
                         Cancel
                     </Button>
 
-                    <Button
+                    <SubmitButton
                         className={ `ms-3 w-30` }
                         variant={ "outline-danger" }
                         onClick={ () => onDeleteSubmit(file.fileId) }
+                        isSubmitting={isDeleteSubmitting}
                     >
                         Delete file permanently.
-                    </Button>
+                    </SubmitButton>
                 </div>
 
 

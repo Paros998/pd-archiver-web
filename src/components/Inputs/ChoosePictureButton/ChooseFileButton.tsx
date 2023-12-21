@@ -2,27 +2,26 @@ import React, { ChangeEvent, FC, useRef } from 'react';
 import { Button, Form, FormControlProps } from 'react-bootstrap';
 import { ErrorMessage, useField } from 'formik';
 
-enum PhotoUpload {
-  FirstPhoto,
+enum FileUpload {
+  FirstFile,
 }
 
-interface ChoosePictureButtonProps extends FormControlProps {
+interface ChooseFileButtonProps extends FormControlProps {
   name: string;
 }
 
-const ChoosePictureButton: FC<ChoosePictureButtonProps> = ({ ...props }) => {
+const ChooseFileButton: FC<ChooseFileButtonProps> = ({ ...props }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [field, , helpers] = useField(props.name);
 
-  const handlePhotoUpload = (e: ChangeEvent<HTMLElement>) => {
-    const file = (e.target as HTMLInputElement).files![PhotoUpload.FirstPhoto];
-
+  const handleFileUpload = (e: ChangeEvent<HTMLElement>) => {
+    const file = (e.target as HTMLInputElement).files![FileUpload.FirstFile];
     if (file !== undefined) {
-      helpers.setValue(file);
+      helpers.setValue(file)
     }
   };
 
-  const handleChoosePhoto = () => inputRef?.current?.click();
+  const handleChooseFile = () => inputRef?.current?.click();
 
   return (
     <Form.Group className='text-center text-md-start'>
@@ -31,20 +30,16 @@ const ChoosePictureButton: FC<ChoosePictureButtonProps> = ({ ...props }) => {
         className='d-none'
         type='file'
         ref={inputRef}
-        onChange={handlePhotoUpload}
+        onChange={handleFileUpload}
       />
 
       <Button
-        variant='secondary-light'
-        className='bg-white shadow-none pe-3 ps-3'
-        onClick={handleChoosePhoto}
+        variant='light'
+        className='shadow-none pe-3 ps-3'
+        onClick={handleChooseFile}
       >
-        Choose Picture
+        Choose File
       </Button>
-
-      <div className='w-100' />
-
-      <Form.Text>File Type</Form.Text>
 
       <ErrorMessage name={field.name}>
         {(errorMessage) =>
@@ -56,4 +51,4 @@ const ChoosePictureButton: FC<ChoosePictureButtonProps> = ({ ...props }) => {
   );
 };
 
-export default ChoosePictureButton;
+export default ChooseFileButton;

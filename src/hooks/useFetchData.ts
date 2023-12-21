@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 interface UseFetchDataConfig<T> {
   dataMapper?: ( data: any ) => T;
   params?: any;
+  shouldFetch?: boolean;
 }
 
 type UseFetchDataReturnModel<T> = [ T, () => Promise<void>, boolean ];
@@ -13,9 +14,12 @@ export const useFetchData = <T extends unknown>( endpoint: string, config?: UseF
   const [ data, setData ] = useState<T>();
   const [ isPending, setIsPending ] = useState( false );
 
-  const { params, dataMapper } = config || {};
+  const { params, dataMapper, shouldFetch = true } = config || {};
 
   const fetchData = useCallback( async () => {
+    if (!shouldFetch) {
+      return;
+    }
     setIsPending( true );
     try {
       const { data: fetchedData} = await Axios.get<T>( endpoint, { params } );
@@ -26,7 +30,7 @@ export const useFetchData = <T extends unknown>( endpoint: string, config?: UseF
     } finally {
       setIsPending( false );
     }
-  }, [ setData, dataMapper, endpoint, params ] );
+  }, [ setData, dataMapper, endpoint, params, shouldFetch ] );
 
   useEffect( () => {
     fetchData().catch();

@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {FC, useMemo} from 'react';
 import {useCurrentUser} from "../../contexts/UserContext/UserContext";
 import {useFetchData} from "../../hooks/useFetchData";
 import {FileModel} from "../../interfaces/models/FileModel";
@@ -6,14 +6,18 @@ import {Spinner} from "react-bootstrap";
 import {supportedFileExtensionsForPreview, supportedImageExtensions} from "../../constants/ImageExtensions";
 import LastFile from "./LastFile/LastFile";
 
-const LastFiles = () => {
+interface LastFilesProps {
+    shouldReload: boolean;
+    reset: () => void;
+}
+
+const LastFiles: FC<LastFilesProps> = ({shouldReload, reset}) => {
     const {currentUser} = useCurrentUser();
-    const params = useMemo(() => {
-        return {limit: 5}
-    }, [])
-    const [lastFiles, , isPending] = useFetchData<FileModel[]>(`/users/${currentUser?.userId}/files/last`, {
-        params
-    })
+    const config = useMemo(() => {
+        reset();
+        return {params: {limit: 7}, shouldFetch: shouldReload}
+    }, [reset, shouldReload])
+    const [lastFiles, , isPending] = useFetchData<FileModel[]>(`/users/${currentUser?.userId}/files/last`, config)
 
     if (isPending) {
         return <div className={`d-flex m-2 gap-2`}>
@@ -30,7 +34,7 @@ const LastFiles = () => {
     return (
         <div className={`d-flex flex-column`}>
             <div className={`m-2 fw-bold fs-4`}>
-                Last {params.limit} added files.
+                Last {config.params.limit} added files.
             </div>
             <div className={`d-flex m-2 gap-2`}>
                 {

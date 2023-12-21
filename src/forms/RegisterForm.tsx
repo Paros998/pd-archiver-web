@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, useFormikContext } from "formik";
 import { Form as FormBoot } from "react-bootstrap";
 import {LoginFormikValues} from "../interfaces/formik/LoginFormikValues";
-import SubmitButton from "../components/SubmitButton/SubmitButton";
+import SubmitFormButton from "../components/SubmitButton/SubmitFormButton";
 
 const RegisterForm = () => {
 
@@ -51,12 +51,12 @@ const RegisterForm = () => {
 
       <hr className={ `my-4 w-50 align-self-center position-relative left-5` }/>
 
-      <SubmitButton
+      <SubmitFormButton
         variant={ `info` }
         className={ `w-25 align-self-center rounded-pill text-light` }
       >
         Register Account
-      </SubmitButton>
+      </SubmitFormButton>
 
     </Form>
   );

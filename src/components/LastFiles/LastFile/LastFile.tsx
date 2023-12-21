@@ -25,26 +25,26 @@ const LastFile: FC<LastFileProps> = ({file, fileProps}) => {
             <Card.Body>
                 <Card.Title>File: {file.fileName}</Card.Title>
                 <Card.Text className={`d-flex flex-column gap-2 mb-4`}>
-                    <div>
+                    <span>
                         <span className={`fw-bold`}>Original name: </span>
                         {file.originalFileName}
-                    </div>
-                    <div>
+                    </span>
+                    <span>
                         <span className={`fw-bold`}>Version: </span>
                         {file.version}
-                    </div>
-                    <div>
+                    </span>
+                    <span>
                         <span className={`fw-bold`}>Extension: </span>
                         {file.extension}
-                    </div>
-                    <div>
+                    </span>
+                    <span>
                         <span className={`fw-bold`}>Date: </span>
                         {file.creationDate}
-                    </div>
-                    <div>
+                    </span>
+                    <span>
                         <span className={`fw-bold`}>Backup: </span>
                        {file.backupReady ? `Available` : `Unavailable`}
-                    </div>
+                    </span>
                 </Card.Text>
                 <div className={`d-flex w-100 justify-content-center`}>
                     <Button variant="primary" onClick={() => navigate(`/file/${file.fileId}`)}>Check Details</Button>
