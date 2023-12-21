@@ -9,23 +9,35 @@ import Axios from "axios";
 import {toast} from "react-toastify";
 import {supportedFileExtensionsForPreview, supportedImageExtensions} from "../../constants/ImageExtensions";
 import {useNavigate} from "react-router-dom";
+import EditFileNameModal from "../Modals/EditFileNameModal";
 
 const FilesContainer = () => {
     const navigate = useNavigate();
     const {currentUser} = useCurrentUser();
+
     const [files, fetchFiles, isPending] = useFetchData<FileModel[]>(`/users/${currentUser?.userId}/files`)
+
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
-    const [file, setFile] = useState<FileProps | undefined>(undefined);
 
-    const launchModal = (file: FileModel) => {
-        setFile({
+    const [showEditFileNameModal, setShowEditFileNameModal] = useState<boolean>(false);
+
+    const [fileProps, setFileProps] = useState<FileProps | undefined>(undefined);
+    const [file, setFile] = useState<FileModel | undefined>(undefined);
+
+    const launchDeleteModal = (file: FileModel) => {
+        setFileProps({
             fileId: file.fileId,
             canPreviewAsImage: supportedImageExtensions.includes(file.extension),
             canPreviewAsFile: supportedFileExtensionsForPreview.includes(file.extension),
             extension: file.extension
         });
         setShowDeleteModal(true);
+    }
+
+    const launchEditFileNameModal = (file: FileModel) => {
+        setFile(file);
+        setShowEditFileNameModal(true);
     }
 
     const onDeleteSubmit = async (fileId: string) => {
@@ -90,9 +102,10 @@ const FilesContainer = () => {
                         <div className="col-1">
                             Backup: {file.backupReady ? `Available` : `Unavailable`}
                         </div>
-                        <div className="col-1 d-inline-flex gap-2">
-                            <Button variant={"outline-info"} onClick={() => navigate(`/file/${file.fileId}`)} className="rounded-pill p-1">Details</Button>
-                            <Button variant={"danger"} onClick={() => launchModal(file)} className="rounded-pill p-1">Delete</Button>
+                        <div className="col-2 d-inline-flex gap-2">
+                            <Button variant={"info"} onClick={() => navigate(`/file/${file.fileId}`)} className="rounded-pill p-1">Details</Button>
+                            <Button variant={"danger"} onClick={() => launchDeleteModal(file)} className="rounded-pill p-1">Delete</Button>
+                            <Button variant={"success"} onClick={() => launchEditFileNameModal(file)} className="rounded-pill p-1">Edit name</Button>
                         </div>
                     </div>
                 )
@@ -101,9 +114,16 @@ const FilesContainer = () => {
             <DeleteFileModal showDeleteModal={showDeleteModal}
                              setShowDeleteModal={setShowDeleteModal}
                              onDeleteSubmit={onDeleteSubmit}
-                             file={file as FileProps}
+                             file={fileProps as FileProps}
                              isDeleteSubmitting={isDeleting}
 
+            />
+
+            <EditFileNameModal
+                showEditModal={showEditFileNameModal}
+                setShowEditModal={setShowEditFileNameModal}
+                file={file as FileModel}
+                refresh={async () => await fetchFiles()}
             />
         </div>
     );
