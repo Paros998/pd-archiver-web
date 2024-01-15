@@ -20,19 +20,19 @@ const LastFiles: FC<LastFilesProps> = ({shouldReload, reset}) => {
     const [lastFiles, , isPending] = useFetchData<FileModel[]>(`/users/${currentUser?.userId}/files/last`, config)
 
     if (isPending) {
-        return <div className={`d-flex m-2 gap-2`}>
+        return <div className={`w-80 d-flex m-2 gap-2`}>
             <Spinner/>
         </div>
     }
 
     if (!lastFiles || lastFiles.length === 0) {
-        return <div className={`d-flex m-2 gap-2`}>
+        return <div className={`w-80 d-flex m-2 gap-2`}>
             There are no new files.
         </div>
     }
 
     return (
-        <div className={`d-flex flex-column`}>
+        <div className={`w-80 d-flex flex-column`}>
             <div className={`m-2 fw-bold fs-4`}>
                 Last {config.params.limit} added files.
             </div>
