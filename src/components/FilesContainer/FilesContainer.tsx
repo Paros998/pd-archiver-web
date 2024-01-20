@@ -102,8 +102,7 @@ const FilesContainer = () => {
                             Backup: {file.backupReady ? `Available` : `Unavailable`}
                         </div>
                         <div className="col-2 d-inline-flex gap-2">
-                            <Button variant={"info"} onClick={() =>  {localStorage.setItem("JWT_FILE_ID", file.fileId);
-                                                                            navigate(`/file/${file.fileId}`)}} className="rounded-pill p-1">Details</Button>
+                            <Button variant={"info"} onClick={() =>  navigate(`/file/${file.fileId}`)} className="rounded-pill p-1">Details</Button>
                             <Button variant={"danger"} onClick={() => launchDeleteModal(file)} className="rounded-pill p-1">Delete</Button>
                             <Button variant={"success"} onClick={() => launchEditFileNameModal(file)} className="rounded-pill p-1">Edit name</Button>
                         </div>

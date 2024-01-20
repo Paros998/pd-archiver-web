@@ -6,18 +6,16 @@ import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import MainWrapper from "../../components/Wrappers/MainWrapper";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import LastFiles from "../../components/LastFiles/LastFiles";
-import {supportedFileExtensionsForPreview, supportedImageExtensions} from "../../constants/ImageExtensions";
 import DetFile from "../../components/FileDetails/FileDet";
 import {useFetchData} from "../../hooks/useFetchData";
 import {FileModel} from "../../interfaces/models/FileModel";
 import Pending from "../../components/Pending/Pending";
-import LastFile from "../../components/LastFiles/LastFile/LastFile";
+import {useParams} from "react-router-dom";
 
 const FileDetails = () => {
     const [shouldReload, setShouldReload] = useState<boolean>(true);
-    const token = localStorage.getItem('JWT_FILE_ID');
-    const [file, fetchFiles, isPending] = useFetchData<FileModel>(`/files/${token}/test`);
+    const {fileId} = useParams<{ fileId: string }>();
+    const [file, fetchFiles, isPending] = useFetchData<FileModel>(`/files/${fileId}/test`);
     useEffect(() => {
         if (!isPending && file) {
             setShouldReload(false);
@@ -39,7 +37,7 @@ const FileDetails = () => {
 
             <MainWrapper className={`d-flex`}>
                 <Navbar/>
-                {file && <DetFile file={file} shouldReload={shouldReload} reset={() => setShouldReload(false)} ></DetFile>}
+                {file && <DetFile file={file} shouldReload={shouldReload} reset={() => setShouldReload(false)}></DetFile>}
             </MainWrapper>
             <Footer/>
         </>

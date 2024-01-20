@@ -47,8 +47,7 @@ const LastFile: FC<LastFileProps> = ({file, fileProps}) => {
                     </span>
                 </Card.Text>
                 <div className={`d-flex w-100 justify-content-center`}>
-                    <Button variant="primary" onClick={() => {localStorage.setItem("JWT_FILE_ID", file.fileId);
-                                                                    navigate(`/file/${file.fileId}`)}}>Check Details</Button>
+                    <Button variant="primary" onClick={() => navigate(`/file/${file.fileId}`)}>Check Details</Button>
                 </div>
             </Card.Body>
         </Card>
