@@ -10,6 +10,14 @@ export interface FileProps {
     extension: string;
 }
 
+export interface DetFileProps {
+    fileId: string;
+    canPreviewAsImage: boolean;
+    canPreviewAsFile: boolean;
+    extension: string;
+    originalFileName: string;
+}
+
 interface DeleteFileModalProps {
     showDeleteModal: boolean;
     setShowDeleteModal: React.Dispatch<SetStateAction<boolean>>;

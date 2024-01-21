@@ -5,19 +5,15 @@ import {FileModel} from "../../interfaces/models/FileModel";
 import {useFetchData} from "../../hooks/useFetchData";
 import {FileUrls} from "../../interfaces/models/FileUrls";
 import ImagePreview from "../ImagePreview/ImagePreview";
+import {FileProps} from "../Modals/DeleteFileModal";
 
-interface FileProps {
+interface LastFileProps {
     file: FileModel;
-    shouldReload: boolean;
-    reset: () => void;
+    fileProps: FileProps;
 }
 
-const DetFile: FC<FileProps> = ({file,shouldReload, reset}) => {
+const DetFile: FC<LastFileProps> = ({file, fileProps}) => {
     const navigate = useNavigate();
-    const config = useMemo(() => {
-        reset();
-        return {params: {limit: 7}, shouldFetch: shouldReload}
-    }, [reset, shouldReload])
     const [fileUrls, , isPending] = useFetchData<FileUrls>(`files/${file.fileId}`)
 
     if (isPending) {
@@ -28,7 +24,7 @@ const DetFile: FC<FileProps> = ({file,shouldReload, reset}) => {
     return (
         <Card style={{ width: '18rem' }}>
             {
-                !isPending && fileUrls &&
+                fileProps.canPreviewAsImage && !isPending && fileUrls &&
                 <ImagePreview file={fileUrls}/>
             }
             <Card.Body>
