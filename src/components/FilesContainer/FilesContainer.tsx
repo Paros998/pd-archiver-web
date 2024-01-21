@@ -4,7 +4,7 @@ import {useFetchData} from "../../hooks/useFetchData";
 import {FileModel} from "../../interfaces/models/FileModel";
 import Pending from "../Pending/Pending";
 import {Button} from "react-bootstrap";
-import DeleteFileModal, {FileProps} from "../Modals/DeleteFileModal";
+import DeleteFileModal, {DetFileProps, FileProps} from "../Modals/DeleteFileModal";
 import Axios from "axios";
 import {toast} from "react-toastify";
 import {supportedFileExtensionsForPreview, supportedImageExtensions} from "../../constants/ImageExtensions";
@@ -30,7 +30,9 @@ const FilesContainer = () => {
             canPreviewAsImage: supportedImageExtensions.includes(file.extension),
             canPreviewAsFile: supportedFileExtensionsForPreview.includes(file.extension),
             extension: file.extension
-        });
+        }
+        );
+
         setShowDeleteModal(true);
     }
 
@@ -102,7 +104,8 @@ const FilesContainer = () => {
                             Backup: {file.backupReady ? `Available` : `Unavailable`}
                         </div>
                         <div className="col-2 d-inline-flex gap-2">
-                            <Button variant={"info"} onClick={() =>  navigate(`/file/${file.fileId}`)} className="rounded-pill p-1">Details</Button>
+                            <Button variant={"info"} onClick={() => { localStorage.setItem("JWT_FILE_ORIG_NAME", file.originalFileName);
+                                                                            navigate(`/file/${file.fileId}`)}} className="rounded-pill p-1">Details</Button>
                             <Button variant={"danger"} onClick={() => launchDeleteModal(file)} className="rounded-pill p-1">Delete</Button>
                             <Button variant={"success"} onClick={() => launchEditFileNameModal(file)} className="rounded-pill p-1">Edit name</Button>
                         </div>
